@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:training/data/datasource/auth_remote_datasource.dart';
-import 'package:training/presentation/auth/blocs/login/login_bloc.dart';
+import 'presentation/auth/blocs/login/login_bloc.dart';
 import 'presentation/auth/pages/splash_page.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(AuthRemoteDatasource()), // Replace 'YourBloc' with your actual Bloc class
+      create: (context) => LoginBloc(AuthRemoteDatasource()),
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
@@ -30,4 +30,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
