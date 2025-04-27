@@ -1,14 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:training/core/extensions/build_context_ext.dart';
+import 'package:training/core/components/custom_button_training.dart';
+import 'package:training/presentation/auth/blocs/login/login_bloc.dart';
 import 'package:training/presentation/home/pages/main_page.dart';
 
-import '../../../core/assets/assets.gen.dart';
-import '../../../core/components/custom_button.dart';
-import '../../../core/components/custom_sized_box.dart';
-import '../../../core/components/custom_text_field.dart';
-import '../../../core/constants/colors.dart';
-import '../../home/pages/home_page.dart';
+import '../../../core/core.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -46,11 +45,8 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SpaceHeight(100),
-              Image.asset(
-                Assets.images.logo.path,
-                width: 400,
-                height: 100,
-              ),
+              //Image.asset (Assets.images.logo.path),
+              Assets.images.logo.image(),
               const SpaceHeight(80),
               CustomTextField(
                 controller: emailController,
@@ -77,8 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: 20,
                   ),
                 ),
-                suffixIcon: IconButton(
-                  icon: Icon(
+                suffixIcon: IconButton(                  icon: Icon(
                     isShowPassword ? Icons.visibility_off : Icons.visibility,
                     color: AppColors.black[200],
                   ),
@@ -90,12 +85,67 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SpaceHeight(90),
-              CustomButton.filled(
-                label: 'Login',
-                onPressed: () {
-                  context.pushReplacement(const MainPage());
+
+              const SpaceHeight(20),
+
+              BlocListener<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  if (state is LoginSuccess) {
+                    // Handle success state
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainPage(),
+                      ),
+                    );
+                  } else if (state is LoginFailure) {
+
+                    final errorMessage = jsonDecode(state.message) ['message'];
+
+                    // Handle failure state
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Center(child: Text(errorMessage)),
+                        backgroundColor: AppColors.red,
+                      ),
+                    );
+                  }
                 },
+                child: BlocBuilder<LoginBloc, LoginState>(
+                  builder: (context, state) {
+                    if (state is LoginLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return CustomButtonTraining(
+                      title: 'Sign In',
+                      backgroundColor: AppColors.red,
+                      onPressed: () {
+                        context.read<LoginBloc>().add(
+                              LoginButtonPressed(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              ),
+                            );
+                      },
+                    );
+                  },
+                ),
               ),
+              const SpaceHeight(20),
+              CustomButtonTraining(
+                title: 'Attendence Using Face Id',
+                prefixIcon: Assets.icons.attendance.svg(),
+                onPressed: () {},
+              ),
+
+              // CustomButton.filled(
+              //  label: 'Login',
+              // onPressed: () {
+              // context.pushReplacement(const MainPage());
+              // },
+              // ),
             ],
           ),
         ),

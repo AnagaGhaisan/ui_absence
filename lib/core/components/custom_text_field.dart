@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
-import 'custom_sized_box.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;

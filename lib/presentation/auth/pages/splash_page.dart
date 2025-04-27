@@ -34,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
           const Spacer(),
           Padding(
             padding: const EdgeInsets.only(top: 100.0),
-            child: Center(child: Assets.lottie.splash.lottie()),
+            child: Center(child: Assets.lottie.loadingPesawat.lottie()),
           ),
           const Spacer(),
           Assets.images.logo.image(width: 150, height: 150),

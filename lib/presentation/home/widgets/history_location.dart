@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:training/core/extensions/build_context_ext.dart';
 
-import '../../../core/assets/assets.gen.dart';
 import '../../../core/components/custom_button.dart';
 import '../../../core/components/custom_sized_box.dart';
 import '../../../core/constants/colors.dart';
